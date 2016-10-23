@@ -33,9 +33,9 @@ def parseMsg(msg):
 	except IndexError:
 		print("word: " + msg[0])
 	word = msg[0]
-	path_to_cmu = pjoin('/Users/','yoogchu/', 'Documents/','Code/','Hackathon/','hackgsu16/','cmudict.txt')
+	path_to_cmu = pjoin('/Users/','yoogchu/', 'Documents/','Code/','Hackathons/','tweetyhaiku/','cmudict.txt')
 	if word.upper() in open(path_to_cmu).read():
-		haikuGen.getWord(word)
+		reply = haikuGen.getWord(word)
 	else:
 		reply = "Word is not recognized!!!"
 	return reply
@@ -84,7 +84,7 @@ while(True):
 	reply = ""
 
 	filename = 'responded_id.json'
-	path_to_file = pjoin("/Users/","yoogchu/", "Documents/", "Code/", "Hackathon/", "hackgsu16/", "twitbot/", filename)
+	path_to_file = pjoin("/Users/","yoogchu/", "Documents/", "Code/", "Hackathons/", "tweetyhaiku/", "twitbot/", filename)
 	for x in range(0,len(reply_id)):
 		with open(path_to_file, 'r') as outfile:
 			for line in outfile:

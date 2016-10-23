@@ -8,13 +8,12 @@ def constrained_sum_sample_pos(n, total):
     dividers = sorted(random.sample(xrange(1, total), n - 1))
     return [a - b for a, b in zip(dividers + [total], [0] + dividers)]
 
-def genLine(syllables, dictList, word):
+def genLine(syllables, dictList):
     line = ""
     numWords = random.randint(1, syllables-2)  # determines the number of words to be built to fill out the required syllables
     if numWords == 1 and syllables > 5:  # to make sure not too many extremely long words are built
         numWords = random.randint(1, 2)
     syllLst = constrained_sum_sample_pos(numWords, syllables)
-
 
     for syllable in syllLst: # 1 in 3 chance for the syllable to be built from each of the dictionaries
         chance = random.randint(1, 3)
@@ -28,11 +27,11 @@ def genLine(syllables, dictList, word):
             line += random.choice(dictList[0][syllable]) + ' ' # always built from normal syllable dictionary if we need a 1 syllable word (no 1 syllable bigrams)
     return line + '\n'
 
-def genHaiku(dictList, word):
+def genHaiku(dictList):
     haiku = ""
     for num in [5, 7, 5]:
-        haiku += genLine(num, dictList, word)
-    return haiku + "\n"
+        haiku += genLine(num, dictList)
+    return haiku # + "\n"
 
 def main():
     file = open("syllableDict.txt", "rb")
@@ -42,9 +41,11 @@ def main():
     dictList = [dict, brownBDict, gutenBDict] # list of all the dictionaries
     outFile = open("randomHaiku.txt", "w")
     # for _ in range(int(raw_input("How many Haiku? "))):
-    outFile.write(genHaiku(dictList, word)) # writes haiku to randomHaiku.txt file
+    #outFile.write(genHaiku(dictList)) # writes haiku to randomHaiku.txt file
+    return_haiku = genHaiku(dictList)
+    return return_haiku
 
 def getWord(tweety_word):
     word = tweety_word
     print 'haikugen got: ' + word
-    main()
+    return main()
