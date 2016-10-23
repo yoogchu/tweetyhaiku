@@ -4,7 +4,7 @@
 
 import unirest
 
-def getresponsedata(word):
+def getResponseData(word):
 	getrequest="https://twinword-word-associations-v1.p.mashape.com/associations/?entry={0}".format(word)
 
 	response = unirest.get(getrequest,
@@ -14,15 +14,15 @@ def getresponsedata(word):
 )
 	return response;
 
-def getresponse(word):
-	errString = "Problem associating word"
-	responsedata = getresponsedata(word);
-	if (responsedata.code == 200 ):
+def getResponse(word):
+	responseData = getResponseData(word);
+	if (responseData.code == 200):
 		try:
-			returnlist = responsedata.body["associations"]
-			return returnlist;
+			returnList = str(responseData.body["associations"])
+			returnList = returnList.split(', ')
+			return returnList
 		except:
-			return errString;
+			return None;
 	else:
-		return errString;
+		return None;
 

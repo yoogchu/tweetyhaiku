@@ -1,6 +1,7 @@
 
 import cPickle, random
 import twitbot.tweetbot
+import bigramDictConstructor
 
 def constrained_sum_sample_pos(n, total):
     """Return a randomly chosen list of n positive integers summing to total.
@@ -33,19 +34,27 @@ def genHaiku(dictList):
         haiku += genLine(num, dictList)
     return haiku # + "\n"
 
-def main():
+def main(word):
     file = open("syllableDict.txt", "rb")
     dict = cPickle.load(file) # loads the already created syllable dictionary consisting of 50,000+ words
-    brownBDict = cPickle.load(open("brownBigramDict.txt", "rb"))  # dictionary consisting of bigrams from the brown corpus
-    gutenBDict = cPickle.load(open("gutenbergBigramDict.txt", "rb")) # dictionary consisting of bigrams from the gutenberg corpus
-    dictList = [dict, brownBDict, gutenBDict] # list of all the dictionaries
-    outFile = open("randomHaiku.txt", "w")
-    # for _ in range(int(raw_input("How many Haiku? "))):
-    #outFile.write(genHaiku(dictList)) # writes haiku to randomHaiku.txt file
-    return_haiku = genHaiku(dictList)
-    return return_haiku
+    constructAss = bigramDictConstructor.getWord(word)
+
+    file_name_brown = 'bigramDicts/' + word + '-brownBigramDict.txt'
+    file_name_guten = 'bigramDicts/' + word + '-gutenbergBigramDict.txt'
+
+    if constructAss is not None:
+        brownBDict = cPickle.load(open(file_name_brown, "rb"))  # dictionary consisting of bigrams from the brown corpus
+        gutenBDict = cPickle.load(open(file_name_guten, "rb")) # dictionary consisting of bigrams from the gutenberg corpus
+
+        dictList = [dict, brownBDict, gutenBDict] # list of all the dictionaries
+        outFile = open("randomHaiku.txt", "w")
+
+        return_haiku = genHaiku(dictList)
+        return return_haiku
+    else:
+        return 'There was an error creating a haiku!'
 
 def getWord(tweety_word):
     word = tweety_word
     print 'haikugen got: ' + word
-    return main()
+    return main(word)
