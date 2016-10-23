@@ -36,6 +36,8 @@ def parseMsg(msg):
 	path_to_cmu = pjoin('/Users/','yoogchu/', 'Documents/','Code/','Hackathons/','tweetyhaiku/','cmudict.txt')
 	if word.upper() in open(path_to_cmu).read():
 		reply = haikuGen.getWord(word)
+	elif word == 'RT':
+		reply = None
 	else:
 		reply = "Word is not recognized!!!"
 	return reply
@@ -99,10 +101,10 @@ while(True):
 			reply = parseMsg(reply_msg[x])
 
 			#send tweet
-			api.statuses.update(status = "@" + reply_sname[x] + " " + reply,
-			in_reply_to_status_id = reply_id[x])
-			
 			if reply is not None:
+				api.statuses.update(status = "@" + reply_sname[x] + " " + reply,
+				in_reply_to_status_id = reply_id[x])
+
 				with open(path_to_file, 'a') as outfile1:
 					outfile1.write("{}\n".format(json.dumps({"id": result_search['statuses'][x]['id'],
 					"name" : result_search['statuses'][x]['user']['screen_name']

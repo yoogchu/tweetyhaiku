@@ -2,6 +2,7 @@
 import cPickle, random
 import twitbot.tweetbot
 import bigramDictConstructor
+import os
 
 def constrained_sum_sample_pos(n, total):
     """Return a randomly chosen list of n positive integers summing to total.

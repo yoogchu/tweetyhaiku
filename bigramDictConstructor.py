@@ -32,7 +32,7 @@ def bigramFinder(wordAssList, text):
                     valid = False
             if valid:
                 bigramLst.append(bigrams[i])
-                print bigramLst
+                # print bigramLst         #for debugging, if you want to see the entire list
 
     return bigramLst
 
@@ -55,19 +55,45 @@ def bigramDict(dictionary, bigramLst):
 def main(word, wordAssList):
     file = open("syllableDict.txt", "rb")
     dict = cPickle.load(file) # loads the already created syllable dictionary
-
+#searched for word
     file_name_brown = 'bigramDicts/' + word + '-brownBigramDict.txt'
     file_name_guten = 'bigramDicts/' + word + '-gutenbergBigramDict.txt'    
 
+    bDict_b = None
+    bDict_g = None
+
     if not os.path.isfile(file_name_brown):
-        bDict = bigramDict(dict, bigramFinder(wordAssList, 0))
-        print 'populating brown ...'
-        cPickle.dump(bDict, open(file_name_brown, "wb")) # saves brown bigram dictionary
+        if bDict_b is None:
+            bDict_b = bigramDict(dict, bigramFinder(wordAssList, 0))
+        print 'populating ' + word + ' brown ...'
+        cPickle.dump(bDict_b, open(file_name_brown, "wb")) # saves brown bigram dictionary
+    print 'skipping ' + word + 'brown'
 
     if not os.path.isfile(file_name_guten):
-        bDict = bigramDict(dict, bigramFinder(wordAssList, 1))
-        print 'populating gutenberg ...'
-        cPickle.dump(bDict, open(file_name_guten, "wb")) # saves gutenberg bigram dictionary
+        if bDict_g is None:
+            bDict_g = bigramDict(dict, bigramFinder(wordAssList, 1))
+        print 'populating ' + word + ' gutenberg ...'
+        cPickle.dump(bDict_g, open(file_name_guten, "wb")) # saves gutenberg bigram dictionary
+    print 'skipping ' + word + 'guten'
+
+#associations
+    for x in wordAssList:
+        file_name_brown = 'bigramDicts/' + x + '-brownBigramDict.txt'
+        file_name_guten = 'bigramDicts/' + x + '-gutenbergBigramDict.txt'    
+
+        if not os.path.isfile(file_name_brown):
+            if bDict_b is None:
+                bDict_b = bigramDict(dict, bigramFinder(wordAssList, 0))
+            print 'populating ' + x + ' brown ...'
+            cPickle.dump(bDict_b, open(file_name_brown, "wb")) # saves brown bigram dictionary
+        print 'skipping ' + x + 'brown'
+
+        if not os.path.isfile(file_name_guten):
+            if bDict_g is None:
+                bDict_g = bigramDict(dict, bigramFinder(wordAssList, 1))
+            print 'populating ' + x + ' gutenberg ...'
+            cPickle.dump(bDict_g, open(file_name_guten, "wb")) # saves gutenberg bigram dictionary
+        print 'skipping ' + x + 'guten'
 
     print 'done'
     return True
