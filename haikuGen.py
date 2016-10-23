@@ -1,6 +1,6 @@
 
 import cPickle, random
-import twitbot.tweetbot
+# import twitbot.tweetbot
 import bigramDictConstructor
 import os
 
@@ -23,7 +23,10 @@ def genLine(syllables, dictList):
             bgram = random.choice(dictList[1][syllable])
             line += bgram[0] + ' ' + bgram[1] + ' '
         elif syllable > 1 and chance == 3:
-            bgram = random.choice(dictList[2][syllable])
+            try:
+                bgram = random.choice(dictList[2][syllable])
+            except IndexError:
+                bgram = random.choice(dictList[1][syllable])
             line += bgram[0] + ' ' + bgram[1] + ' '
         else:
             line += random.choice(dictList[0][syllable]) + ' ' # always built from normal syllable dictionary if we need a 1 syllable word (no 1 syllable bigrams)
@@ -47,11 +50,12 @@ def main(word):
         brownBDict = cPickle.load(open(file_name_brown, "rb"))  # dictionary consisting of bigrams from the brown corpus
         gutenBDict = cPickle.load(open(file_name_guten, "rb")) # dictionary consisting of bigrams from the gutenberg corpus
 
-        dictList = [dict, brownBDict, gutenBDict] # list of all the dictionaries
+        dictList = [dict, brownBDict, gutenBDict] # list of the dictionaries
         outFile = open("randomHaiku.txt", "w")
 
         return_haiku = genHaiku(dictList)
-        return return_haiku
+
+        print return_haiku
     else:
         return 'There was an error creating a haiku!'
 
@@ -59,3 +63,18 @@ def getWord(tweety_word):
     word = tweety_word
     print 'haikugen got: ' + word
     return main(word)
+
+
+getWord('politics')
+getWord('phones')
+getWord('happy')
+getWord('sad')
+getWord('school')
+getWord('shoes')
+getWord('sword')
+getWord('shirt')
+
+
+
+
+

@@ -28,14 +28,17 @@ twitter_userstream = TwitterStream(auth=auth, domain='userstream.twitter.com')
 
 def parseMsg(msg):
 	msg = msg[0].split()
+	word = msg[0]
+
 	try:
-		print msg
+		print(word)
 	except IndexError:
-		print("word: " + msg[0])
+		print('Index error but keep going!!')
 	word = msg[0]
 	path_to_cmu = pjoin('/Users/','yoogchu/', 'Documents/','Code/','Hackathons/','tweetyhaiku/','cmudict.txt')
 	if word.upper() in open(path_to_cmu).read():
 		reply = haikuGen.getWord(word)
+
 	elif word == 'RT':
 		reply = None
 	else:
